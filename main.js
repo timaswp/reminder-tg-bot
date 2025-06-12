@@ -1,8 +1,10 @@
 import 'dotenv/config';
 import TelegramBot from 'node-telegram-bot-api';
+
 import connectDB from './db.js';
 import Task from './models/task.js';
 import { initAgenda, scheduleReminder } from './agenda.js';
+import { encrypt, decrypt } from './util/encryption.js';
 
 const token = process.env.TG_TOKEN;
 
@@ -15,7 +17,7 @@ const bot = new TelegramBot(token, { polling: true });
     bot.onText(/\/start/, (msg) => {
         bot.sendMessage(
             msg.chat.id,
-            `Привет!\nДобавь задачу в формате:\n\n/add купить молоко в 18:30\n\nПосмотреть — /list\nУдалить — /delete <ID>`
+            `Привет!\nДобавь задачу в формате:\n\n/add позвонить родителям в 17:30\n\nПосмотреть список задач — /list\nУдалить задачу — /delete <ID задачи>`
         );
     });
 
@@ -41,7 +43,7 @@ const bot = new TelegramBot(token, { polling: true });
             );
             if (remindAt < now) remindAt.setDate(remindAt.getDate() + 1);
 
-            const task = await Task.create({ userId: chatId, text, remindAt });
+            const task = await Task.create({ userId: chatId, text: encrypt(text), remindAt });
             await scheduleReminder(task);
 
             bot.sendMessage(
@@ -62,7 +64,7 @@ const bot = new TelegramBot(token, { polling: true });
         const list = tasks
             .map(
                 (t) =>
-                    `ID: ${t._id}\n• ${t.text} — ${t.remindAt.toLocaleString()}`
+                    `ID: ${t._id}\n• ${decrypt(t.text)} — ${t.remindAt.toLocaleString()}`
             )
             .join('\n\n');
         bot.sendMessage(msg.chat.id, `📋 Твои задачи:\n\n${list}`);

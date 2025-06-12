@@ -1,5 +1,6 @@
 import Agenda from 'agenda';
 import Task from './models/task.js';
+import { decrypt } from './util/encryption.js';
 
 let agenda;
 
@@ -13,7 +14,7 @@ export async function initAgenda(bot) {
         const task = await Task.findById(taskId);
         if (!task || task.sent) return;
 
-        await bot.sendMessage(task.userId, `🔔 Напоминание: ${task.text}`);
+        await bot.sendMessage(task.userId, `🔔 Напоминание: ${decrypt(task.text)}`);
         task.sent = true;
         await task.save();
     });
