@@ -141,6 +141,8 @@ const bot = new TelegramBot(token, { polling: true });
                         }
                     });
                 }
+            } else if (msg.text.toString().toLowerCase() === '/list') {
+                return;
             } else {
                 bot.sendMessage(msg.chat.id, 'Такой команды нет!\nИспользуйте /help', {
                     reply_markup: {
