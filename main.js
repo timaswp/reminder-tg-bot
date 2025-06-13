@@ -129,7 +129,7 @@ const bot = new TelegramBot(token, { polling: true });
             if(msg.text.toString().toLowerCase() === buttons.reset.toLowerCase()) {
                 try {
                     await Task.deleteMany({ userId: msg.chat.id });
-                    bot.sendMessage(msg.chat.id, 'Список задач усшено очищен!\nЧтобы добавить новую задачу используйте /add', {
+                    bot.sendMessage(msg.chat.id, 'Список задач успешно очищен!\nЧтобы добавить новую задачу используйте /add', {
                         reply_markup: {
                             remove_keyboard: true
                         }

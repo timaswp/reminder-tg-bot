@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const TaskSchema = new mongoose.Schema({
-    userId: { type: String, required: true },
+    userId: { type: Number, required: true },
     text: { type: String, required: true },
     remindAt: { type: Date, required: true },
     createdAt: { type: Date, default: Date.now },
