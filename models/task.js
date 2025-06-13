@@ -5,7 +5,6 @@ const TaskSchema = new mongoose.Schema({
     text: { type: String, required: true },
     remindAt: { type: Date, required: true },
     createdAt: { type: Date, default: Date.now },
-    sent: { type: Boolean, default: false },
 });
 
 const model = mongoose.model('Task', TaskSchema);

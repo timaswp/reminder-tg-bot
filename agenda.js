@@ -12,11 +12,10 @@ export async function initAgenda(bot) {
     agenda.define('send reminder', async (job) => {
         const { taskId } = job.attrs.data;
         const task = await Task.findById(taskId);
-        if (!task || task.sent) return;
+        if (!task) return;
 
         await bot.sendMessage(task.userId, `🔔 Напоминание: ${decrypt(task.text)}`);
-        task.sent = true;
-        await task.save();
+        await Task.deleteOne({ _id: taskId });
     });
 
     await agenda.start();
