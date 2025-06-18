@@ -3,6 +3,10 @@ import { DateTime } from 'luxon';
 export function convertLocalTimeToUTC(localTimeStr, userTimeZone) {
     const [hour, minute] = localTimeStr.split(':').map(Number);
 
+    if (minute > 59 || minute < 0 || hour < 0 || hour > 23) {
+        throw new Error('Время указано неверно');
+    }
+
     const localDateTime = DateTime.local()
         .set({
             hour,

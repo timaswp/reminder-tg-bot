@@ -121,7 +121,8 @@ const bot = new TelegramBot(token, { polling: true });
             .join('\n\n');
         bot.sendMessage(msg.chat.id, `📋 Твои задачи:\n\n${list}`, {
             "reply_markup": {
-                "keyboard": [[buttons.reset]]
+                "keyboard": [[buttons.reset]],
+                "resize_keyboard": true,
             }
         });
 
@@ -166,7 +167,7 @@ const bot = new TelegramBot(token, { polling: true });
 
     bot.onText(/\/help/, (msg) => {
         const message = dedent(
-            `<b>Все команды бота:<b>\n
+            `<b>Все команды бота:</b>\n
             /start - обновить часовой пояс
             /add - добавить задачу
             /list - посмотреть список задач
